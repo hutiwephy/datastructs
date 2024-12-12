@@ -32,7 +32,7 @@ int list_insert(void* head, void* tail, void* it, void* item){
         _item->prev = _it->prev;
         _it->prev = _item;
 
-        if(_it == _head){ _head == _item; }
+        if(_it == _head){ _head = _item; }
     }
 
     return 1;
@@ -50,7 +50,7 @@ int list_append(void* head, void* tail, void* it, void* item){
         _item->next = _it->next;
         _it->next = _item;
 
-        if(_it == _tail){ _tail == _item; }
+        if(_it == _tail){ _tail = _item; }
     }
 
     return 1;
