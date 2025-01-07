@@ -22,7 +22,6 @@ int main(int argc, char* argv[]){
 
     int* item = malloc(sizeof(int));
     *item = 0;
-
     array_insert(&array, LENGTH, item);
     item = malloc(sizeof(int));
     *item = 0;
@@ -36,7 +35,7 @@ int main(int argc, char* argv[]){
         printf("%d, ", *(array[i]));
     }
 
-    printf("\nlength: %d\n", array_length(&array));
+    printf("\nlength: %lld\n", array_length(&array));
 
     item = array_remove(&array, 4);
     printf("%d, \n", *item);
@@ -47,7 +46,7 @@ int main(int argc, char* argv[]){
             printf("NULL, ");
         }else{
             printf("%d, ", *item);
-            free(item);
+            free(item); // "free(): invalid pointer", but WHY?
         }
     }
 

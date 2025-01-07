@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
         printf("%d, ", *(array[i]));
     }
 
-    printf("\nlength: %d\n", array_length(&array));
+    printf("\nlength: %lld\n", array_length(&array));
 
 
     for(int i=0; i<LENGTH+4; i++){

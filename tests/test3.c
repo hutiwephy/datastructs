@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
         printf("%d, ", *(array[i]));
     }
 
-    printf("\nlength: %d\n", array_length(&array));
+    printf("\nlength: %lld\n", array_length(&array));
 
     item = array_remove(&array, 4);
     printf("%d, \n", *item);

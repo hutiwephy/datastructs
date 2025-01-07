@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20.0)
-project(datastructs VERSION 1.0.0)
+project(datastructs VERSION 0.1.0)
 
 option(BUILD_TESTS "Build test programs" OFF)
 
@@ -20,10 +20,10 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "")
 set(CMAKE_IMPORT_LIBRARY_PREFIX "lib")
 
 FILE(GLOB src ${CMAKE_CURRENT_SOURCE_DIR}/src/*)
-add_library(static STATIC ${src})
-target_include_directories(static PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/)
-target_include_directories(static PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/)
-add_library(CTOOLS::${PROJECT_NAME} ALIAS static)
+add_library(${PROJECT_NAME} STATIC ${src})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/)
+add_library(CTOOLS::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 if(${BUILD_TESTS})
 FILE(GLOB tests ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.c)

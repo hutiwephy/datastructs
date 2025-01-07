@@ -3,6 +3,9 @@
 #include <stddef.h>
 
 
+int memins(void** memory, size_t itemsize, size_t length, size_t index, void* item);
+int memrem(void** memory, size_t itemsize, size_t length, size_t index);
+
 size_t array_length(void* array);
 int array_push(void* array, void* item);
 int array_push_back(void* array, void* item);

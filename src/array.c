@@ -49,59 +49,38 @@ int array_push(void* array, void* item){
     if(item == NULL){ return 0; }
     register size_t memsize = array_length(array)+1;
 
-    register void** tmp = malloc((memsize+1)*sizeof(void*));
-    if(tmp == NULL){ return 0; }
+    if(memins(array, sizeof(void*), memsize, 0, &item) == 0){ return 0; }
 
-    if(__c(array) != NULL){
-        // copy to offset position to allow item to take 1st spot
-        memcpy(tmp+1, __c(array), memsize*sizeof(void*));
-        free(__c(array));
-    }else{
-        // set NULL terminator
-        tmp[1] = NULL;
+    if(memsize == 1){
+        __c(array)[1] = NULL;
     }
 
-    __c(array) = tmp;
-    tmp[0] = item;
     return 1;
 }
 int array_push_back(void* array, void* item){
     if(item == NULL){ return 0; }
     register size_t memsize = array_length(array)+1;
 
-    register void** tmp = malloc((memsize+1)*sizeof(void*));
-    if(tmp == NULL){ return 0; }
+    if(memins(array, sizeof(void*), memsize, (memsize == 1)? 0 : memsize-2, &item) == 0){ return 0; }
 
-    if(__c(array) != NULL){
-        memcpy(tmp, __c(array), memsize*sizeof(void*));
-        free(__c(array));
+    if(memsize == 1){
+        __c(array)[1] = NULL;
     }
 
-    __c(array) = tmp;
-    tmp[memsize-1] = item;
-    tmp[memsize] = NULL;
     return 1;
 }
 int array_insert(void* array, size_t index, void* item){
-    if(item == NULL){ return 0; }
+     if(item == NULL){ return 0; }
     register size_t memsize = array_length(array)+1;
 
-    // check if valid index (index is a unsigned value)
     if(index > memsize-1){ return 0; }
 
-    register void** tmp = malloc((memsize+1)*sizeof(void*));
-    if(tmp == NULL){ return 0; }
+    if(memins(array, sizeof(void*), memsize, index, &item) == 0){ return 0; }
 
-    if(__c(array) != NULL){
-        memcpy(tmp, __c(array), memsize*sizeof(void*));
-        free(__c(array));
-        // shift the rest of the data by one position
-        memmove(tmp+index+1, tmp+index, (memsize-index-1)*sizeof(void*));
+    if(memsize == 1){
+        __c(array)[1] = NULL;
     }
 
-    __c(array) = tmp;
-    tmp[index] = item;
-    tmp[memsize] = NULL;
     return 1;
 }
 void* array_pop(void* array){
@@ -112,61 +91,47 @@ void* array_pop(void* array){
 
     void* item = __c(array)[0];
 
-    if(memsize > 2){
-        tmp = malloc((memsize-1)*sizeof(void*));
-        if(tmp == NULL){ return NULL; }
-
-        memcpy(tmp, __c(array)+1, (memsize-1)*sizeof(void*));
+    if(memsize == 2){
+        free(__c(array));
+        __c(array) = NULL;
     }
 
-    free(__c(array));
-    __c(array) = tmp;
+    if(memrem(array, sizeof(void*), memsize, 0) == 0){ return NULL; }
+
     return item;
 }
 void* array_pop_back(void* array){
     if(__c(array) == NULL){ return NULL; }
 
     register size_t memsize = array_length(array)+1;
-    void** tmp = NULL;
 
     void* item = __c(array)[memsize-2];
 
-    if(memsize > 2){
-        tmp = malloc((memsize-1)*sizeof(void*));
-        if(tmp == NULL){ return NULL; }
-
-        memcpy(tmp, __c(array), (memsize-1)*sizeof(void*));
-        tmp[memsize-2] = NULL;
+    if(memsize == 2){
+        free(__c(array));
+        __c(array) = NULL;
     }
 
-    free(__c(array));
-    __c(array) = tmp;
+    if(memrem(array, sizeof(void*), memsize, memsize-2) == 0){ return NULL; }
+
     return item;
 }
 void* array_remove(void* array, size_t index){
     if(__c(array) == NULL){ return NULL; }
 
     register size_t memsize = array_length(array)+1;
-    void** tmp = NULL;
 
     if(index > memsize-1){ return NULL; }
 
     void* item = __c(array)[index];
 
-    if(memsize > 2){
-        tmp = malloc((memsize-1)*sizeof(void*));
-        if(tmp == NULL){ return NULL; }
-
-        // copy everything before index
-        memcpy(tmp, __c(array), index*sizeof(void*));
-        // copy everything after index
-        memcpy(tmp+index, __c(array)+index+1, (memsize-3+index)*sizeof(void*));
-
-        tmp[memsize-2] = NULL;
+    if(memsize == 2){
+        free(__c(array));
+        __c(array) = NULL;
     }
 
-    free(__c(array));
-    __c(array) = tmp;
+    if(memrem(array, sizeof(void*), memsize, index) == 0){ return NULL; }
+
     return item;
 }
 void array_destroy(void* array, void (*destructor)(void*)){
