@@ -9,7 +9,7 @@
 #define _tail (&(dict->tail))
 #define _pair ((pair_t*)pair)
 void* dict_splice(dict_t* dict, dict_it it){
-    list_remove(_head, _tail, it);
+    list_remove(dict, it);
     void* tmp = it->value;
     free(it->key);
     free(it);
@@ -39,6 +39,8 @@ void* dict_set(dict_t* dict, char* key, void* value){
         if(it == NULL){ return NULL; }
 
         it->key = strdup(key);
+
+        list_push(dict, it);
     }
 
     // Swap the value and return the old one

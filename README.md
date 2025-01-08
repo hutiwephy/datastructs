@@ -157,28 +157,35 @@ Destroy an array and call a destructor for each item inside the array
 <br><br>
 
 ## List
-A List is any structure with a previous and next pointer in it's beginning
+A List is any structure with a head and a tail in its beginning its nodes also need a previous and next pointer in it's beginning
 
 Example:
 ```c
-typedef struct mystruct_st {
-    struct mystruct_st* prev;
-    struct mystruct_st* next;
+typedef struct mylistnode_st {
+    struct mylistnode_st* prev;
+    struct mylistnode_st* next;
 
     ...
-} mystruct_t;
+} mylistnode_t;
+
+typedef struct mylist_st {
+    mylistnode_t* head;
+    mylistnode_t* tail;
+
+    ...
+} mylist_t;
+
 ```
 >**WARNING**: you are responsible for allocating and deallocating all of these these functions only provide generic [doubly linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) operations.
 
 <br>
 
 <!-- list_push -->
-### - <span id="list_push"></span>`int list_push(void* head, void* tail, void* item)`
+### - <span id="list_push"></span>`int list_push(void* list, void* item)`
 Add an item to the start of the list
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 - `void* item`: pointer to the item to be added
 
 **Returns**:
@@ -186,12 +193,11 @@ Add an item to the start of the list
 
 **Example**:
 ```c
-mystruct_t* head = NULL;
-mystruct_t* tail = NULL;
+mylist_t list = (mylist_t){NULL, NULL};
 
 ...
 
-int res = list_push(&head, &tail, item);
+int res = list_push(&list, item);
 if(res == 0){
     /// Handle error
 }
@@ -199,12 +205,11 @@ if(res == 0){
 <br><br>
 
 <!-- list_push -->
-### - <span id="list_push_back"></span>`int list_push_back(void* head, void* tail, void* item)`
+### - <span id="list_push_back"></span>`int list_push_back(void* list, void* item)`
 Add an item to the end of the list
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 - `void* item`: pointer to the item to be added
 
 **Returns**:
@@ -212,12 +217,11 @@ Add an item to the end of the list
 
 **Example**:
 ```c
-mystruct_t* head = NULL;
-mystruct_t* tail = NULL;
+mylist_t list = (mylist_t){NULL, NULL};
 
 ...
 
-int res = list_push_back(&head, &tail, item);
+int res = list_push_back(&list, item);
 if(res == 0){
     /// Handle error
 }
@@ -225,24 +229,22 @@ if(res == 0){
 <br><br>
 
 <!-- list_pop -->
-### - <span id="list_pop"></span>`int list_pop(void* head, void* tail)`
+### - <span id="list_pop"></span>`int list_pop(void* list)`
 Remove the first item in a list
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 
 **Returns**:
 - `void*`: item that was removed
 
 **Example**:
 ```c
-mystruct_t* head = NULL;
-mystruct_t* tail = NULL;
+mylist_t list = (mylist_t){NULL, NULL};
 
 ...
 
-void* item = list_pop(&head, &tail);
+void* item = list_pop(&list);
 if(item == NULL){
     /// Handle error or assume empty
 }
@@ -251,24 +253,22 @@ free(item);
 <br><br>
 
 <!-- list_pop_back -->
-### - <span id="list_pop_back"></span>`int list_pop_back(void* head, void* tail)`
+### - <span id="list_pop_back"></span>`int list_pop_back(void* list)`
 Remove the last item in a list
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 
 **Returns**:
 - `void*`: item that was removed
 
 **Example**:
 ```c
-mystruct_t* head = NULL;
-mystruct_t* tail = NULL;
+mylist_t list = (mylist_t){NULL, NULL};
 
 ...
 
-void* item = list_pop_back(&head, &tail);
+void* item = list_pop_back(&list);
 if(item == NULL){
     /// Handle error or assume empty
 }
@@ -277,12 +277,11 @@ free(item);
 <br><br>
 
 <!-- list_insert -->
-### - <span id="list_insert"></span>`int list_insert(void* head, void* tail, void* it, void* item)`
+### - <span id="list_insert"></span>`int list_insert(void* list, void* it, void* item)`
 Add an item to a List before the iterator's location
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 - `void* it`: iterator (pointer to a list item)
 - `void* item`: pointer to the item to be added
 
@@ -292,12 +291,11 @@ Add an item to a List before the iterator's location
 <br><br>
 
 <!-- list_append -->
-### - <span id="list_append"></span>`int list_append(void* head, void* tail, void* it, void* item)`
+### - <span id="list_append"></span>`int list_append(void* list, void* it, void* item)`
 Add an item to a List after the iterator's location
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 - `void* it`: iterator (pointer to a list item)
 - `void* item`: pointer to the item to be added
 
@@ -307,12 +305,11 @@ Add an item to a List after the iterator's location
 <br><br>
 
 <!-- list_remove -->
-### - <span id="list_remove"></span>`void* list_remove(void* head, void* tail, void* it)`
+### - <span id="list_remove"></span>`void* list_remove(void* list, void* it)`
 Add an item to a List after the iterator's location
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 - `void* it`: iterator (pointer to a list item)
 
 **Returns**:
@@ -321,12 +318,11 @@ Add an item to a List after the iterator's location
 <br><br>
 
 <!-- list_remove -->
-### - <span id="list_swap"></span>`void list_swap(void* head, void* tail, void* a, void* b)`
+### - <span id="list_swap"></span>`void list_swap(void* list, void* a, void* b)`
 Switch the position of 2 items on a list
 
 **Parameters**:
-- `void* head`: address to the pointer of the first item in the list
-- `void* tail`: address to the pointer of the last item in the list
+- `void* list`: address to a struct containing the head and tail pointers in it's start
 - `void* a`: pointer to a list item
 - `void* b`: pointer to a list item
 <br>

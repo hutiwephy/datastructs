@@ -2,18 +2,15 @@
 
 
 typedef struct list_st {
-    struct list_st* prev;
-    struct list_st* next;
-
-    void* data;
+    void* head;
+    void* tail;
 } list_t;
-typedef list_t* list_it;
 
-#define list_push(head, tail, item) list_insert(head, tail, *head, item)
-#define list_push_back(head, tail, item) list_append(head, tail, *tail, item)
-#define list_pop(head, tail) list_remove(head, tail, *head)
-#define list_pop_back(head, tail) list_remove(head, tail, *tail)
-int list_insert(void* head, void* tail, void* it, void* item);
-int list_append(void* head, void* tail, void* it, void* item);
-void* list_remove(void* head, void* tail, void* it);
-void list_swap(void* head, void* tail, void* a, void* b);
+#define list_push(list, item) list_insert(list, (list)->head, item)
+#define list_push_back(list, item) list_append(list, (list)->tail, item)
+#define list_pop(list) list_remove(list, (list)->head)
+#define list_pop_back(list) list_remove(list, (list)->tail)
+int list_insert(void* list, void* it, void* item);
+int list_append(void* list, void* it, void* item);
+void* list_remove(void* list, void* it);
+void list_swap(void* list, void* a, void* b);
