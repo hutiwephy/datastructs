@@ -58,7 +58,7 @@ An array is a `NULL` terminated **array of pointers**, that when empty it's just
 <br><br>
 
 <!-- array_length -->
-### - <span id="array_length"></span>`size_t array_length(void* array)`
+### <span id="array_length"></span>`size_t array_length(void* array)`
 Dertermines the length of an array an returns, however it ignores the `NULL` terminator in order to assert the memory size of the array it is necessary to add 1 `sizeof(void*)`
 
 **Parameters**:
@@ -70,7 +70,7 @@ Dertermines the length of an array an returns, however it ignores the `NULL` ter
 <br><br>
 
 <!-- array_push -->
-### - <span id="array_push"></span>`int array_push(void* array, void* item)`
+### <span id="array_push"></span>`int array_push(void* array, void* item)`
 Insert an item to the start of the array
 
 **Parameters**:
@@ -83,7 +83,7 @@ Insert an item to the start of the array
 <br><br>
 
 <!-- array_push_back -->
-### - <span id="array_push_back"></span>`int array_push_back(void* array, void* item)`
+### <span id="array_push_back"></span>`int array_push_back(void* array, void* item)`
 Insert an item to the end of the array
 
 **Parameters**:
@@ -96,7 +96,7 @@ Insert an item to the end of the array
 <br><br>
 
 <!-- array_insert -->
-### - <span id="array_insert"></span>`int array_insert(void* array, size_t index, void* item)`
+### <span id="array_insert"></span>`int array_insert(void* array, size_t index, void* item)`
 Insert an item to a specified index in the array
 
 **Parameters**:
@@ -110,7 +110,7 @@ Insert an item to a specified index in the array
 <br><br>
 
 <!-- array_pop -->
-### - <span id="array_pop"></span>`void* array_pop(void* array);`
+### <span id="array_pop"></span>`void* array_pop(void* array);`
 Remove an item from the start of the array
 
 **Parameters**:
@@ -122,7 +122,7 @@ Remove an item from the start of the array
 <br><br>
 
 <!-- array_pop_back -->
-### - <span id="array_pop_back"></span>`void* array_pop_back(void* array);`
+### <span id="array_pop_back"></span>`void* array_pop_back(void* array);`
 Remove an item from the end of the array
 
 **Parameters**:
@@ -134,7 +134,7 @@ Remove an item from the end of the array
 <br><br>
 
 <!-- array_remove -->
-### - <span id="array_remove"></span>`void* array_remove(void* array, size_t index)`
+### <span id="array_remove"></span>`void* array_remove(void* array, size_t index)`
 Remove an item from the end of the array
 
 **Parameters**:
@@ -147,7 +147,7 @@ Remove an item from the end of the array
 <br><br>
 
 <!-- array_destroy -->
-### - <span id="array_destroy"></span>`void array_destroy(void* array, void (*destructor)(void*))`
+### <span id="array_destroy"></span>`void array_destroy(void* array, void (*destructor)(void*))`
 Destroy an array and call a destructor for each item inside the array
 
 **Parameters**:
@@ -181,7 +181,7 @@ typedef struct mylist_st {
 <br>
 
 <!-- list_push -->
-### - <span id="list_push"></span>`int list_push(void* list, void* item)`
+### <span id="list_push"></span>`int list_push(void* list, void* item)`
 Add an item to the start of the list
 
 **Parameters**:
@@ -205,7 +205,7 @@ if(res == 0){
 <br><br>
 
 <!-- list_push -->
-### - <span id="list_push_back"></span>`int list_push_back(void* list, void* item)`
+### <span id="list_push_back"></span>`int list_push_back(void* list, void* item)`
 Add an item to the end of the list
 
 **Parameters**:
@@ -229,7 +229,7 @@ if(res == 0){
 <br><br>
 
 <!-- list_pop -->
-### - <span id="list_pop"></span>`int list_pop(void* list)`
+### <span id="list_pop"></span>`int list_pop(void* list)`
 Remove the first item in a list
 
 **Parameters**:
@@ -253,7 +253,7 @@ free(item);
 <br><br>
 
 <!-- list_pop_back -->
-### - <span id="list_pop_back"></span>`int list_pop_back(void* list)`
+### <span id="list_pop_back"></span>`int list_pop_back(void* list)`
 Remove the last item in a list
 
 **Parameters**:
@@ -277,7 +277,7 @@ free(item);
 <br><br>
 
 <!-- list_insert -->
-### - <span id="list_insert"></span>`int list_insert(void* list, void* it, void* item)`
+### <span id="list_insert"></span>`int list_insert(void* list, void* it, void* item)`
 Add an item to a List before the iterator's location
 
 **Parameters**:
@@ -291,7 +291,7 @@ Add an item to a List before the iterator's location
 <br><br>
 
 <!-- list_append -->
-### - <span id="list_append"></span>`int list_append(void* list, void* it, void* item)`
+### <span id="list_append"></span>`int list_append(void* list, void* it, void* item)`
 Add an item to a List after the iterator's location
 
 **Parameters**:
@@ -305,7 +305,7 @@ Add an item to a List after the iterator's location
 <br><br>
 
 <!-- list_remove -->
-### - <span id="list_remove"></span>`void* list_remove(void* list, void* it)`
+### <span id="list_remove"></span>`void* list_remove(void* list, void* it)`
 Add an item to a List after the iterator's location
 
 **Parameters**:
@@ -318,7 +318,7 @@ Add an item to a List after the iterator's location
 <br><br>
 
 <!-- list_remove -->
-### - <span id="list_swap"></span>`void list_swap(void* list, void* a, void* b)`
+### <span id="list_swap"></span>`void list_swap(void* list, void* a, void* b)`
 Switch the position of 2 items on a list
 
 **Parameters**:
@@ -349,7 +349,7 @@ free(str);
 <br>
 
 <!-- dict_isEmpty -->
-### - <span id="dict_isEmpty"></span>`bool dict_isEmpty(dict_t* dict)`
+### <span id="dict_isEmpty"></span>`bool dict_isEmpty(dict_t* dict)`
 Check if a dictionary is empty
 
 **Parameters**:
@@ -361,7 +361,7 @@ Check if a dictionary is empty
 <br><br>
 
 <!-- dict_set -->
-### - <span id="dict_set"></span>`void* dict_set(dict_t* dict, char* key, void* value)`
+### <span id="dict_set"></span>`void* dict_set(dict_t* dict, char* key, void* value)`
 Set a value to a key.<br>
 If `value` is `NULL` or `DICT_DELETE` then this pair will be erased.<br>
 The return value is all ways the old value or `NULL` if it is a new entry.
@@ -377,7 +377,7 @@ The return value is all ways the old value or `NULL` if it is a new entry.
 <br><br>
 
 <!-- dict_get -->
-### - <span id="dict_get"></span>`void* dict_get(dict_t* dict, char* key)`
+### <span id="dict_get"></span>`void* dict_get(dict_t* dict, char* key)`
 Get a value of a key.
 
 **Parameters**:
@@ -390,7 +390,7 @@ Get a value of a key.
 <br><br>
 
 <!-- dict_getKeys -->
-### - <span id="dict_getKeys"></span>`char** dict_getKeys(dict_t* dict)`
+### <span id="dict_getKeys"></span>`char** dict_getKeys(dict_t* dict)`
 Get all the keys in a dictionary.
 
 **Parameters**:
@@ -402,7 +402,7 @@ Get all the keys in a dictionary.
 <br><br>
 
 <!-- dict_destroy -->
-### - <span id="dict_destroy"></span>`void dict_destroy(dict_t* dict, void (*destructor)(void*))`
+### <span id="dict_destroy"></span>`void dict_destroy(dict_t* dict, void (*destructor)(void*))`
 Destroy a dictionary and free all memory.
 
 **Parameters**:
