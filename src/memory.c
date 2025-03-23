@@ -39,9 +39,10 @@ int memrem(void** memory, size_t itemsize, size_t length, size_t index){
     // copy everything before index
     memcpy(tmp, *memory, index*itemsize);
     // copy everything after index
-    memcpy(_tmp+(index*itemsize), _memory+((index+1)*itemsize), (length-index)*itemsize);
+    memcpy(_tmp+(index*itemsize), _memory+((index+1)*itemsize), (length-(index+1))*itemsize);
 
     // set old memory equal to new memory
+    free(*memory);
     *memory = tmp;
 
     return 1;

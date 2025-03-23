@@ -46,7 +46,6 @@ int main(int argc, char* argv[]){
             printf("NULL, ");
         }else{
             printf("%d, ", *item);
-            free(item); // "free(): invalid pointer", but WHY?
         }
     }
 

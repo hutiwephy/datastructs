@@ -1,5 +1,5 @@
 .vscode/
-cmake-config/
+cmake-config*/
 NOTES.*
 TODO.*
 *.old*

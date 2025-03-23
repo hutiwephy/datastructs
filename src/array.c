@@ -94,9 +94,7 @@ void* array_pop(void* array){
     if(memsize == 2){
         free(__c(array));
         __c(array) = NULL;
-    }
-
-    if(memrem(array, sizeof(void*), memsize, 0) == 0){ return NULL; }
+    }else if(memrem(array, sizeof(void*), memsize, 0) == 0){ return NULL; }
 
     return item;
 }
@@ -110,9 +108,7 @@ void* array_pop_back(void* array){
     if(memsize == 2){
         free(__c(array));
         __c(array) = NULL;
-    }
-
-    if(memrem(array, sizeof(void*), memsize, memsize-2) == 0){ return NULL; }
+    }else if(memrem(array, sizeof(void*), memsize, memsize-2) == 0){ return NULL; }
 
     return item;
 }
@@ -128,9 +124,7 @@ void* array_remove(void* array, size_t index){
     if(memsize == 2){
         free(__c(array));
         __c(array) = NULL;
-    }
-
-    if(memrem(array, sizeof(void*), memsize, index) == 0){ return NULL; }
+    }else if(memrem(array, sizeof(void*), memsize, index) == 0){ return NULL; }
 
     return item;
 }
