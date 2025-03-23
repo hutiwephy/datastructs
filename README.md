@@ -52,6 +52,43 @@ target_link_libraries(your_target CTOOLS::datastructs)
 
 ## Documentation
 <!-- Add Introduction here -->
+## Memory
+Complementary memory operations found on the array header.
+<br>
+<br><br>
+
+<!-- memins -->
+### <span id="memins"></span>`int memins(void** memory, size_t itemsize, size_t length, size_t index, void* item)`
+Insert an item at a specified position in raw array
+
+**Parameters**:
+- `void** memory`: Address of an array
+- `size_t itemsize`: Size of items in array
+- `size_t length`: Array length
+- `size_t index`: Position to insert item
+- `void* item`: Chunk to copy onto memory
+
+**Returns**:
+- `int`: Number of added items if zero then assume error
+<br>
+<br><br>
+
+<!-- memins -->
+### <span id="memrem"></span>`int memrem(void** memory, size_t itemsize, size_t length, size_t index)`
+Remove an item at a specified position in raw array
+> NOTE: all memory related to the item must be freed by your code
+
+**Parameters**:
+- `void** memory`: Address of an array
+- `size_t itemsize`: Size of items in array
+- `size_t length`: Array length
+- `size_t index`: Position of item to remove
+
+**Returns**:
+- `int`: Number of removed items if zero then assume error
+<br>
+<br><br>
+
 ## Array
 An array is a `NULL` terminated **array of pointers**, that when empty it's just `NULL`
 <br>
