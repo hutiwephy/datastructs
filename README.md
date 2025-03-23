@@ -6,6 +6,8 @@ This library aims to provide support for arrays, lists, dictionaries and much mo
 ## Contents
 - [Adding to a CMake Project](#adding-to-a-cmake-project)
 - [Documentation](#documentation)
+  - [memins](#memins)
+  - [memrem](#memrem)
   - [Array](#array)
     - [length](#array_length)
     - [push](#array_push)
@@ -24,7 +26,7 @@ This library aims to provide support for arrays, lists, dictionaries and much mo
     - [append](#list_append)
     - [remove](#list_remove)
     - [swap](#list_swap)
-  - [Dictionary](#dict)
+  - [Dictionary](#dictionary)
     - [isEmpty](#dict_isEmpty)
     - [set](#dict_set)
     - [get](#dict_get)
@@ -366,19 +368,60 @@ Switch the position of 2 items on a list
 <br><br>
 
 ## Dictionary
-A Dictionary consists of a [doubly linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) that pairs a string to a pointer to some user defined data.
+A Dictionary consists of a [doubly linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) that contains pairs, each pair as a key and some data.
+
+The suported key formats are `char*` and `uintptr_t`.
+
+These methods only provide common operations and you are responsible for any memory allocation.
+
+A valid Dictionary structure must be similar to (a default one is provided as `dict_t`):
+```c
+typedef struct dict_st {
+    struct mypair_st* head;
+    struct mypair_st* tail;
+
+    ...
+} dict_t;
+```
+while a valid Pair structure must be:
+```c
+typedef struct pair_st {
+    struct pair_st* prev;
+    struct pair_st* next;
+
+    char* key;
+    ...
+} pair_t;
+```
 
 Example:
 ```c
+typedef struct mypair_st {
+    struct mypair_st* prev;
+    struct mypair_st* next;
+
+    char* key;
+    char* value;
+} mypair_t;
 dict_t mydictionary = new_dict;
 
-char* str = strdup("Hello, world!");
-dict_set(&mydictionary, "greeting", str);
+// Create a new entry
+mypair_t* entry = malloc(sizeof(mypair_t));
+*entry = (mypair_t){NULL, NULL, strdup("greeting"), strdup("Hello, world!")};
 
-printf("Greetings: %s", dict_get(&mydictionary, "greeting"));
+// Add to dictionary
+dict_set(&mydictionary, "greeting", entry);
 
-str = dict_set(&mydictionary, "greeting", DICT_DELETE);
-free(str);
+// Read from dictionary
+printf("Greetings: %s", ((mypair_t*)dict_get(&mydictionary, "greeting"))->value);
+
+// Delete from dictionary
+entry = dict_set(&mydictionary, "greeting", DICT_DELETE);
+
+// Destroy entry
+free(entry->key);
+free(entry->value);
+free(entry);
 ```
 
 > **WARNING**: all items passed to the dictionary must be freed by the user
@@ -386,11 +429,11 @@ free(str);
 <br>
 
 <!-- dict_isEmpty -->
-### <span id="dict_isEmpty"></span>`bool dict_isEmpty(dict_t* dict)`
+### <span id="dict_isEmpty"></span>`bool dict_isEmpty(void* dict)`
 Check if a dictionary is empty
 
 **Parameters**:
-- `dict_t* dict`: pointer to a dictionary
+- `void* dict`: pointer to a dictionary
 
 **Returns**:
 - `bool`: true if empty otherwise false aka. 0
@@ -398,15 +441,15 @@ Check if a dictionary is empty
 <br><br>
 
 <!-- dict_set -->
-### <span id="dict_set"></span>`void* dict_set(dict_t* dict, char* key, void* value)`
+### <span id="dict_set"></span>`void* dict_set(void* dict, char* key, void* value)`
 Set a value to a key.<br>
 If `value` is `NULL` or `DICT_DELETE` then this pair will be erased.<br>
-The return value is all ways the old value or `NULL` if it is a new entry.
+The return value is all ways the old value or `NULL` if it is a new or non existent entry.
 
 **Parameters**:
-- `dict_t* dict`: pointer to a dictionary
+- `void* dict`: pointer to a dictionary
 - `char* key`: key to look for
-- `void* value`: new value (`NULL` will result in deletition of the pair)
+- `void* value`: new value (`NULL` will result in the removal of the pair)
 
 **Returns**:
 - `void*`: old value (free this value)
@@ -414,36 +457,36 @@ The return value is all ways the old value or `NULL` if it is a new entry.
 <br><br>
 
 <!-- dict_get -->
-### <span id="dict_get"></span>`void* dict_get(dict_t* dict, char* key)`
-Get a value of a key.
+### <span id="dict_get"></span>`void* dict_get(void* dict, char* key)`
+Get a pair of a key.
 
 **Parameters**:
-- `dict_t* dict`: pointer to a dictionary
+- `void* dict`: pointer to a dictionary
 - `char* key`: key to look for
 
 **Returns**:
-- `void*`: value stored at the requested key or `NULL` if non-existing
+- `void*`: pair stored at the requested key or `NULL` if non-existing
 <br>
 <br><br>
 
 <!-- dict_getKeys -->
-### <span id="dict_getKeys"></span>`char** dict_getKeys(dict_t* dict)`
+### <span id="dict_getKeys"></span>`char** dict_getKeys(void* dict)`
 Get all the keys in a dictionary.
 
 **Parameters**:
-- `dict_t* dict`: pointer to a dictionary
+- `void* dict`: pointer to a dictionary
 
 **Returns**:
-- `char**`: `NULL` terminated array containing all keys in the dictionary.
+- `char**`: `NULL` terminated array containing all keys in the dictionary. (use free when no longer needed)
 <br>
 <br><br>
 
 <!-- dict_destroy -->
-### <span id="dict_destroy"></span>`void dict_destroy(dict_t* dict, void (*destructor)(void*))`
+### <span id="dict_destroy"></span>`void dict_destroy(void* dict, void (*destructor)(void*))`
 Destroy a dictionary and free all memory.
 
 **Parameters**:
-- `dict_t* dict`: pointer to a dictionary
+- `void* dict`: pointer to a dictionary
 - `void (*destructor)(void*)`: function to free up the item's memory can be `NULL` (ex: `&free`)
 <br>
 <br><br>

@@ -5,79 +5,81 @@
 
 
 //:PRIVATE
-#define _head (&(dict->head))
-#define _tail (&(dict->tail))
+typedef struct pair_st {
+    struct pair_st* prev;
+    struct pair_st* next;
+
+    char* key;
+} pair_t;
+typedef pair_t* dict_it;
+#define iskeyequal(a, b) (                        \
+    (a) == (b) || /* allow usage of uintptr_t */  \
+    strcmp((a), (b)) == 0                         \
+)
+#define _dict ((dict_t*)dict)
 #define _pair ((pair_t*)pair)
-void* dict_splice(dict_t* dict, dict_it it){
-    list_remove(dict, it);
-    void* tmp = it->value;
-    free(it->key);
-    free(it);
+
+//:PUBLIC
+void* dict_set(void* dict, char* key, void* pair){
+    if(dict == NULL){ return NULL; }
+
+    dict_it tmp = dict_get(dict, key);
+    if(pair == NULL){
+        if(tmp == NULL){ return NULL; }
+
+        // delete
+        list_remove(dict, tmp);
+        tmp->prev = NULL;
+        tmp->next = NULL;
+        return tmp;
+    }else{
+        // validate key
+        if(!iskeyequal(key, _pair->key)){
+            _pair->key = key;
+        }
+
+        if(tmp == NULL){
+            // create new
+            list_push(_dict, pair);
+        }else{
+            // swap
+            list_swap(dict, tmp, pair);
+        }
+    }
+
     return tmp;
 }
-pair_t* dict_getPair(dict_t* dict, char* key){
-    for(dict_it it = dict->head; it != NULL; it = it->next){
-        if(strcmp(it->key, key) == 0){ return it; }
+void* dict_get(void* dict, char* key){
+    if(dict == NULL){ return NULL; }
+    for(dict_it it = _dict->head; it != NULL; it = it->next){
+        if(iskeyequal(key, it->key)){
+            return it;
+        }
     }
     return NULL;
 }
-
-//:PUBLIC
-void* dict_set(dict_t* dict, char* key, void* value){
-    dict_it it = dict_getPair(dict, key);
-
-    // If value is NULL then delete entry
-    if(value == NULL){
-        if(it == NULL){ return NULL; }
-        
-        return dict_splice(dict, it);
-    }
-
-    // If entry not existant then create a new one
-    if(it == NULL){
-        it = calloc(1, sizeof(pair_t));
-        if(it == NULL){ return NULL; }
-
-        it->key = strdup(key);
-
-        list_push(dict, it);
-    }
-
-    // Swap the value and return the old one
-    void* tmp = it->value;
-    it->value = value;
-    return tmp;
-}
-void* dict_get(dict_t* dict, char* key){
-    dict_it it = dict_getPair(dict, key);
-    return (it == NULL)? NULL : it->value;
-}
-char** dict_getKeys(dict_t* dict){
+char** dict_getKeys(void* dict){
     if(dict == NULL){ return NULL; }
 
     char** keys = NULL;
-    for(dict_it it = dict->head; it != NULL; it = it->next){
+    for(dict_it it = _dict->head; it != NULL; it = it->next){
         array_push(&keys, it->key);
     }
 
     return keys;
 }
-void dict_destroy(dict_t* dict, void (*destructor)(void*)){
+void dict_destroy(void* dict, void (*destructor)(void*)){
     if(dict == NULL){ return; }
 
-    dict_it it = dict->head;
-
-    while(it != NULL){
-        dict_it tmp = it->next;
-        
-        if(destructor != NULL){
-            destructor(it->value);
+    if(destructor != NULL){
+        dict_it it = _dict->head;
+        while(it != NULL){
+            dict_it tmp = it->next;
+            destructor(it);
+            it = tmp;
         }
-        free(it->key);
-        free(it);
-        it = tmp;
     }
 
-    dict->head = NULL;
-    dict->tail = NULL;
+    _dict->head = NULL;
+    _dict->tail = NULL;
 }
