@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20.0)
 project(datastructs VERSION 0.1.0)
 
-option(BUILD_TESTS "Build test programs" ON)
+option(BUILD_TESTS "Build test programs" OFF)
 
 set(PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR}/build)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
