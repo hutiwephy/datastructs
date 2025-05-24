@@ -3,25 +3,21 @@
 
 
 //:PRIVATE
-typedef struct listnode_st {
-    struct listnode_st* prev;
-    struct listnode_st* next;
-} listnode_t;
 typedef struct listheader_st {
-    listnode_t* head;
-    listnode_t* tail;
+    list_item_t* head;
+    list_item_t* tail;
 } listheader_t;
 
 // Aliases for improved readability
 #define _list ((listheader_t*)(list))
-#define _head ((listnode_t*)(_list->head))
-#define _tail ((listnode_t*)(_list->tail))
+#define _head ((list_item_t*)(_list->head))
+#define _tail ((list_item_t*)(_list->tail))
 #define __head ((_list->head))  // Bypass "error: lvalue required as left operand of assignment"
 #define __tail ((_list->tail))  // Bypass "error: lvalue required as left operand of assignment"
-#define _it   ((listnode_t*)(it))
-#define _item ((listnode_t*)(item))
-#define _a    ((listnode_t*)(a))
-#define _b    ((listnode_t*)(b))
+#define _it   ((list_item_t*)(it))
+#define _item ((list_item_t*)(item))
+#define _a    ((list_item_t*)(a))
+#define _b    ((list_item_t*)(b))
 
 //:PUBLIC
 int list_insert(void* list, void* it, void* item){
@@ -61,7 +57,7 @@ int list_append(void* list, void* it, void* item){
     return 1;
 }
 void* list_remove(void* list, void* it){
-    register listnode_t* it_prev = _it->prev;
+    register list_item_t* it_prev = _it->prev;
 
     if(_it == _head){
         __head = _it->next;
@@ -75,8 +71,8 @@ void* list_remove(void* list, void* it){
     return _it;
 }
 void list_swap(void* list, void* a, void* b){
-    register listnode_t* a_prev = _a->prev;
-    register listnode_t* a_next = _a->next;
+    register list_item_t* a_prev = _a->prev;
+    register list_item_t* a_next = _a->next;
     _a->prev = _b->prev;
     _a->next = _b->next;
     _b->prev = a_prev;
@@ -97,4 +93,19 @@ void list_swap(void* list, void* a, void* b){
     }else if(b == _tail){
         __tail = a;
     }
+}
+void list_destroy(void* list, void (*destructor)(void*)){
+    if(list == NULL){ return; }
+
+    if(destructor != NULL){
+        list_it it = _list->head;
+        while(it != NULL){
+            list_it tmp = it->next;
+            destructor(it);
+            it = tmp;
+        }
+    }
+
+    _list->head = NULL;
+    _list->tail = NULL;
 }

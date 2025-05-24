@@ -47,3 +47,24 @@ int memrem(void** memory, size_t itemsize, size_t length, size_t index){
 
     return 1;
 }
+
+void* memcatcpy(void* a, size_t a_size, void* b, size_t b_size){
+    if(a == NULL && b == NULL){ return NULL; }
+
+    void* tmp = malloc(a_size + b_size);
+    if(tmp == NULL){ return NULL; }
+
+    memcpy(tmp, a, a_size);
+    memcpy(_tmp+a_size, b, b_size);
+
+    return tmp;
+}
+
+char* strcatcpy(char* a, char* b){
+    if(b == NULL){ return NULL; }
+
+    size_t a_size = (a == NULL)? 0 : strlen(a);
+    size_t b_size = strlen(b);
+
+    return memcatcpy(a, a_size, b, b_size+1);
+}

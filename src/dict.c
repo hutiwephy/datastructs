@@ -40,7 +40,7 @@ void* dict_set(void* dict, char* key, void* pair){
 
         if(tmp == NULL){
             // create new
-            list_push(_dict, pair);
+            list_push_back(_dict, pair);
         }else{
             // swap
             list_swap(dict, tmp, pair);
@@ -51,7 +51,7 @@ void* dict_set(void* dict, char* key, void* pair){
 }
 void* dict_get(void* dict, char* key){
     if(dict == NULL){ return NULL; }
-    for(dict_it it = _dict->head; it != NULL; it = it->next){
+    for(dict_it it = _dict->tail; it != NULL; it = it->prev){
         if(iskeyequal(key, it->key)){
             return it;
         }
@@ -67,19 +67,4 @@ char** dict_getKeys(void* dict){
     }
 
     return keys;
-}
-void dict_destroy(void* dict, void (*destructor)(void*)){
-    if(dict == NULL){ return; }
-
-    if(destructor != NULL){
-        dict_it it = _dict->head;
-        while(it != NULL){
-            dict_it tmp = it->next;
-            destructor(it);
-            it = tmp;
-        }
-    }
-
-    _dict->head = NULL;
-    _dict->tail = NULL;
 }
