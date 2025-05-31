@@ -41,6 +41,7 @@ int pskipws(char* str, size_t* i, size_t str_len){
             case '\r':
             case '\t':
                 if(++(*i) >= str_len){ return JSON_PE_STRINGLEN; }
+                break;
             default:
                 return 0;
         }
