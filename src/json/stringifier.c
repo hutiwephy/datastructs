@@ -19,7 +19,7 @@ int json_strbuildstate_write(json_strbuildstate_t* state, const char* format, ..
         if(state->str != NULL){
             free(state->str);
         }
-        state->str == NULL;
+        state->str = NULL;
         return -1;
     }
 
@@ -29,7 +29,7 @@ int json_strbuildstate_write(json_strbuildstate_t* state, const char* format, ..
     }
     if(tmp_str == NULL){
         free(tmp_va);
-        state->str == NULL;
+        state->str = NULL;
         return -1;
     }
     state->str = tmp_str;

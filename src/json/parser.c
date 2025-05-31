@@ -45,6 +45,7 @@ int pskipws(char* str, size_t* i, size_t str_len){
                 return 0;
         }
     }
+    return 0;
 }
 int pobject(dict_t* value, char* str, size_t* i, size_t str_len){
     int err = 0;
