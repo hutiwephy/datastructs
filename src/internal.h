@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include <asprintf.h>
+#include <posix_dme.h>
 
 #define CHUNK_SIZE 512
 
