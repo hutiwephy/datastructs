@@ -116,7 +116,7 @@ ssize_t getdelim(char** lineptr, size_t* n, int delimiter, FILE* stream){
     }
 
     // Add NULL terminator
-    *lineptr[*n] = 0;
+    (*lineptr)[*n] = 0;
 
     // Adjust size to fit string
     *lineptr = realloc(*lineptr, (++(*n))*sizeof(char));
@@ -151,7 +151,7 @@ ssize_t getwdelim(wchar_t** lineptr, size_t* n, wint_t delimiter, FILE* stream){
     }
 
     // Add NULL terminator
-    *lineptr[*n] = 0;
+    (*lineptr)[*n] = 0;
 
     // Adjust size to fit string
     *lineptr = realloc(*lineptr, (++(*n))*sizeof(wchar_t));
